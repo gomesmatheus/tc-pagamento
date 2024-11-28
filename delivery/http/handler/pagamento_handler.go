@@ -34,7 +34,13 @@ func (c *PagamentoHandler) AtualizarPagamentoRoute(w http.ResponseWriter, r *htt
 			w.Write([]byte("400 bad request"))
 			return
 		}
-		json.Unmarshal(body, &pagamento)
+		err = json.Unmarshal(body, &pagamento)
+		if err != nil {
+			fmt.Println("Error parsing request body")
+			w.WriteHeader(400)
+			w.Write([]byte("400 bad request"))
+			return
+		}
 
 		c.pagamentoUseCases.AtualizarPagamento(pagamento.Id, true)
 
