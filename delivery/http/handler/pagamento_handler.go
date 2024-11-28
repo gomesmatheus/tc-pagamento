@@ -42,15 +42,6 @@ func (c *PagamentoHandler) AtualizarPagamentoRoute(w http.ResponseWriter, r *htt
 			return
 		}
 
-		// TEST Coverage fail
-		if pagamento.Id == 999999 {
-			fmt.Println("Coverage fail test")
-			fmt.Println("Coverage fail test")
-			fmt.Println("Coverage fail test")
-			fmt.Println("Coverage fail test")
-			fmt.Println("Coverage fail test")
-		}
-
 		c.pagamentoUseCases.AtualizarPagamento(pagamento.Id, true)
 
 		w.WriteHeader(200)
