@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: pagamento-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: pagamento-app
+  template:
+    metadata:
+      labels:
+        app: pagamento-app
+    spec:
+      containers:
+      - name: pagamento-app-container
+        # image: DOCKER_IMAGE
+        image: matheusgomes1/tc-pagamento:1.0
+        resources:
+          limits:
+            memory: 100Mi
+            ephemeral-storage: "2Gi"
