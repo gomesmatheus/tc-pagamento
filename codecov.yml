@@ -5,4 +5,4 @@ coverage:
 
 ignore:
   - cmd/myapp/main.go
-  - infraestructure/*
+  - infraestructure/external/*
