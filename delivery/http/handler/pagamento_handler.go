@@ -42,6 +42,14 @@ func (c *PagamentoHandler) AtualizarPagamentoRoute(w http.ResponseWriter, r *htt
 			return
 		}
 
+		if pagamento.Id == 101921 {
+			fmt.Println("Uncored line")
+			fmt.Println("Uncored line")
+			fmt.Println("Uncored line")
+			fmt.Println("Uncored line")
+			fmt.Println("Uncored line")
+		}
+
 		c.pagamentoUseCases.AtualizarPagamento(pagamento.Id, true)
 
 		w.WriteHeader(200)
