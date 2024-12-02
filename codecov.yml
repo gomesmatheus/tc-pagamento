@@ -1,0 +1,8 @@
+coverage:
+  precision: 2
+  round: down
+  threshold: 80
+
+ignore:
+  - cmd/myapp/main.go
+  - infraestructure/external/*

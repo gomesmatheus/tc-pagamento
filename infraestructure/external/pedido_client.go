@@ -1,27 +1,57 @@
 package external
 
 import (
+	"bytes"
+	"encoding/json"
 	"fmt"
 	"net/http"
-	"time"
 )
 
 type PedidoHttpClient struct {
-	BaseURL    string
-	HTTPClient *http.Client
+	BaseURL string
 }
 
 func NewPedidoHttpClient() *PedidoHttpClient {
 	return &PedidoHttpClient{
-		BaseURL: "http://localhost:8080",
-		HTTPClient: &http.Client{
-			Timeout: 10 * time.Second,
-		},
+		BaseURL: "http://svc-pedido-app",
 	}
 }
 
 func (c *PedidoHttpClient) AtualizarPagamento(idPedido int, pagamentoAprovado bool) error {
-	// TODO adicionar chamada para API de pedidos
-	fmt.Println(fmt.Sprintf("Pedido %d atualizado com sucesso!", idPedido))
+	port := 80
+	endpoint := fmt.Sprintf("%s:%d/pedido/atualizar/%d", c.BaseURL, port, idPedido)
+
+	requestBody := map[string]interface{}{
+		"status": "Pagamento Aprovado",
+	}
+
+	jsonBody, err := json.Marshal(requestBody)
+	if err != nil {
+		fmt.Println("Failed to marshal request body", err)
+		return err
+	}
+
+	req, err := http.NewRequest("PATCH", endpoint, bytes.NewBuffer(jsonBody))
+	if err != nil {
+		fmt.Println("Failed to create HTTP request", err)
+		return err
+	}
+
+	req.Header.Set("Content-Type", "application/json")
+
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		fmt.Println("Failed to call pedido-api", err)
+		return err
+	}
+	defer resp.Body.Close()
+
+	if resp.StatusCode != http.StatusCreated {
+		fmt.Println("Failed to update pedido. Status:", resp.StatusCode)
+		return fmt.Errorf("failed to update pedido with status: %d", resp.StatusCode)
+	}
+
+	fmt.Printf("Pedido %d atualizado com sucesso!\n", idPedido)
 	return nil
 }
